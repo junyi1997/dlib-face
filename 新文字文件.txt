@@ -1,0 +1,10 @@
+pyinstaller -F face.py
+
+pyinstaller face.spec
+
+pip install cmake
+pip install dlib==19.17.0
+pip install numpy
+pip install scikit-image
+pip install firebase-admin google-cloud-firestore
+pip install pyinstaller
