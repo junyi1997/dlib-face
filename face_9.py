@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-
+count=[0]  
+count_bef=0
+count_error=[1,2,3,4,5,6,7,8,9]
+count_success=[]
+existing_faces_cnt=0
 import time 
 import cv2
 import numpy as np
@@ -163,8 +167,8 @@ def get_pose_estimation_in_euler_angle(landmark_shape, im_szie):
     except Exception as e:
         # print('get_pose_estimation_in_euler_angle exception:{}'.format(e))
         return -1, None, None, None
-def color_change(im,count,number_i,color_i):
-    # global count,im
+def color_change(number_i,color_i):
+    global count
     color1=(0, 0, 255)
     color2=(0, 0, 255)
     color3=(0, 0, 255)
@@ -175,26 +179,26 @@ def color_change(im,count,number_i,color_i):
     color8=(0, 0, 255)
     color9=(0, 0, 255)
 
-    # cv2.rectangle(im, (0, 95), (1022, 675), (0, 0, 255), 2)
+    
     if color_i == "red":
-        cv2.putText( im, "1", (130, 230), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (0, 95), (340, 288), (0, 0, 255), 2)
-        cv2.putText( im, "2", (470, 230), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (340, 95), (680, 288), (0, 0, 255), 2)
-        cv2.putText( im, "3", (810, 230), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (680, 95), (1022, 288), (0, 0, 255), 2)
-        cv2.putText( im, "4", (130, 423), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (0, 288), (340, 481), (0, 0, 255), 2)
-        cv2.putText( im, "5", (470, 423), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (340, 288), (680, 481), (0, 0, 255), 2)
-        cv2.putText( im, "6", (810, 423), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (680, 288), (1022, 481), (0, 0, 255), 2)
-        cv2.putText( im, "7", (130, 616), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (0, 481), (340, 675), (0, 0, 255), 2)
-        cv2.putText( im, "8", (470, 616), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (340, 481), (680, 675), (0, 0, 255), 2)
-        cv2.putText( im, "9", (810, 616), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
-        cv2.rectangle(im, (680, 481), (1022, 675), (0, 0, 255), 2)
+        cv2.putText( im, "1", (280, 320), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (0, 135), (636, 404), (0, 0, 255), 2)
+        cv2.putText( im, "2", (916, 320), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (636, 135), (1272, 404), (0, 0, 255), 2)
+        cv2.putText( im, "3", (1552, 320), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (1272, 135), (1908, 404), (0, 0, 255), 2)
+        cv2.putText( im, "4", (280, 589), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (0, 404), (636, 674), (0, 0, 255), 2)
+        cv2.putText( im, "5", (916, 589), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (636, 404), (1272, 674), (0, 0, 255), 2)
+        cv2.putText( im, "6", (1552, 589), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (1272, 404), (1908, 674), (0, 0, 255), 2)
+        cv2.putText( im, "7", (280, 858), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (0, 674), (636, 943), (0, 0, 255), 2)
+        cv2.putText( im, "8", (916, 858), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (636, 674), (1272, 943), (0, 0, 255), 2)
+        cv2.putText( im, "9", (1552, 858), cv2.FONT_HERSHEY_PLAIN, 8, (0, 0, 255), 8 )
+        cv2.rectangle(im, (1272, 674), (1908, 943), (0, 0, 255), 2)
 
     else:
         if 1 in count:
@@ -216,49 +220,51 @@ def color_change(im,count,number_i,color_i):
         if 9 in count:
             color9=(0, 255, 0)
 
-        cv2.putText( im, "1", (130, 230), cv2.FONT_HERSHEY_PLAIN, 8, color1, 8 )
-        cv2.rectangle(im, (0, 95), (340, 288), color1, 2)
-        cv2.putText( im, "2", (470, 230), cv2.FONT_HERSHEY_PLAIN, 8, color2, 8 )
-        cv2.rectangle(im, (340, 95), (680, 288), color2, 2)
-        cv2.putText( im, "3", (810, 230), cv2.FONT_HERSHEY_PLAIN, 8, color3, 8 )
-        cv2.rectangle(im, (680, 95), (1022, 288), color3, 2)
-        cv2.putText( im, "4", (130, 423), cv2.FONT_HERSHEY_PLAIN, 8, color4, 8 )
-        cv2.rectangle(im, (0, 288), (340, 481), color4, 2)
-        cv2.putText( im, "5", (470, 423), cv2.FONT_HERSHEY_PLAIN, 8, color5, 8 )
-        cv2.rectangle(im, (340, 288), (680, 481), color5, 2)
-        cv2.putText( im, "6", (810, 423), cv2.FONT_HERSHEY_PLAIN, 8, color6, 8 )
-        cv2.rectangle(im, (680, 288), (1022, 481), color6, 2)
-        cv2.putText( im, "7", (130, 616), cv2.FONT_HERSHEY_PLAIN, 8, color7, 8 )
-        cv2.rectangle(im, (0, 481), (340, 675), color7, 2)
-        cv2.putText( im, "8", (470, 616), cv2.FONT_HERSHEY_PLAIN, 8, color8, 8 )
-        cv2.rectangle(im, (340, 481), (680, 675), color8, 2)
-        cv2.putText( im, "9", (810, 616), cv2.FONT_HERSHEY_PLAIN, 8, color9, 8 )
-        cv2.rectangle(im, (680, 481), (1022, 675), color9, 2)
+        cv2.putText( im, "1", (280, 320), cv2.FONT_HERSHEY_PLAIN, 8, color1, 8 )
+        cv2.rectangle(im, (0, 135), (636, 404), color1, 5)
+        cv2.putText( im, "2", (916, 320), cv2.FONT_HERSHEY_PLAIN, 8, color2, 8 )
+        cv2.rectangle(im, (636, 135), (1272, 404), color2, 5)
+        cv2.putText( im, "3", (1552, 320), cv2.FONT_HERSHEY_PLAIN, 8, color3, 8 )
+        cv2.rectangle(im, (1272, 135), (1908, 404), color3, 5)
+        cv2.putText( im, "4", (280, 589), cv2.FONT_HERSHEY_PLAIN, 8, color4, 8 )
+        cv2.rectangle(im, (0, 404), (636, 674), color4, 5)
+        cv2.putText( im, "5", (916, 589), cv2.FONT_HERSHEY_PLAIN, 8, color5, 8 )
+        cv2.rectangle(im, (636, 404), (1272, 674), color5, 5)
+        cv2.putText( im, "6", (1552, 589), cv2.FONT_HERSHEY_PLAIN, 8, color6, 8 )
+        cv2.rectangle(im, (1272, 404), (1908, 674), color6, 5)
+        cv2.putText( im, "7", (280, 858), cv2.FONT_HERSHEY_PLAIN, 8, color7, 8 )
+        cv2.rectangle(im, (0, 674), (636, 943), color7, 5)
+        cv2.putText( im, "8", (916, 858), cv2.FONT_HERSHEY_PLAIN, 8, color8, 8 )
+        cv2.rectangle(im, (636, 674), (1272, 943), color8, 5)
+        cv2.putText( im, "9", (1552, 858), cv2.FONT_HERSHEY_PLAIN, 8, color9, 8 )
+        cv2.rectangle(im, (1272, 674), (1908, 943), color9, 5)
 
 
-def Judging_the_direction(count,x,z):
+def Judging_the_direction(x,z):
     # print("X = {:}  Z = {:}".format(x,z))
     # return 0
-    # global count
-    if 1 not in count  and  x > 430 and x < 600 and z > 100 and z < 170 : count.append(1)
-    elif 2 not in count  and  x > 220 and x < 420 and z > 100 and z < 170 : count.append(2)
-    elif 3 not in count  and  x > 100 and x < 200 and z > 100 and z < 170 : count.append(3)
-    elif 4 not in count  and  x > 430 and x < 600 and z > 190 and z < 270 : count.append(4)
-    elif 5 not in count  and  x > 220 and x < 420 and z > 190 and z < 270 : count.append(5)
-    elif 6 not in count  and  x > 100 and x < 200 and z > 190 and z < 270 : count.append(6)
-    elif 7 not in count  and  x > 430 and x < 600 and z > 320 and z < 400 : count.append(7)
-    elif 8 not in count  and  x > 220 and x < 420 and z > 320 and z < 400 : count.append(8)
-    elif 9 not in count  and  x > 100 and x < 200 and z > 320 and z < 400 : count.append(9)
+    global count
+    if 1 not in count and x > 450 and x < 600 and z > 100 and z < 160 : count.append(1)
+    elif 2 not in count  and  x > 220 and x < 410 and z > 100 and z < 160 : count.append(2)
+    elif 3 not in count  and  x > 100 and x < 210 and z > 100 and z < 160 : count.append(3)
+    elif 4 not in count  and  x > 450 and x < 600 and z > 180 and z < 270 : count.append(4)
+    elif 5 not in count  and  x > 220 and x < 410 and z > 180 and z < 270 : count.append(5)
+    elif 6 not in count  and  x > 100 and x < 210 and z > 180 and z < 270 : count.append(6)
+    elif 7 not in count  and  x > 450 and x < 600 and z > 320 and z < 400 : count.append(7)
+    elif 8 not in count  and  x > 220 and x < 410 and z > 320 and z < 400 : count.append(8)
+    elif 9 not in count  and  x > 100 and x < 210 and z > 320 and z < 400 : count.append(9)
 
 
     return count[int(len(count))-1] 
-def main(count,count_bef,count_error,count_success,existing_faces_cnt):
+
+    
+if __name__ == '__main__':
     
     # rtsp://admin:ts123456@10.20.21.240:554
     cap = cv2.VideoCapture(0)
     count_T = 1
-    
-    # name = "M1"
+    name = input("請輸入學號：")
+    # name = "M10907324"
     while True:
         start_time = time.time()
         
@@ -299,13 +305,13 @@ def main(count,count_bef,count_error,count_success,existing_faces_cnt):
         cv2.circle(im, ( int(nose_end_point2D[0][0][0]), int(nose_end_point2D[0][0][1])) , 3, (255,0,0), -1) 
         # Display image
         im = cv2.flip(im, 1)
-        im = cv2.resize(im, (1024 ,768),interpolation=cv2.INTER_CUBIC)
+        im = cv2.resize(im, (1920 ,1080),interpolation=cv2.INTER_CUBIC)
         path_photos_from_camera = './data/data_faces_from_camera/'
         kk = cv2.waitKey(1)
 
         if name != "":
-            count_time = Judging_the_direction(count,int(nose_end_point2D[0][0][0]),int(nose_end_point2D[0][0][1]))  
-            color_change(im,count,count_time,"green")
+            count_time = Judging_the_direction(int(nose_end_point2D[0][0][0]),int(nose_end_point2D[0][0][1]))  
+            color_change(count_time,"green")
             if count_bef != count_time:
 
                 count_error.remove(count_time)
@@ -324,9 +330,8 @@ def main(count,count_bef,count_error,count_success,existing_faces_cnt):
                 cv2.imwrite(aaa1, image_save)
 
             if count_time == 0:
-                color_change(im,count,0,"red")  
+                color_change(0,"red")  
             if count_T == 10 : break
- 
         cv2.imshow("Output", im)
         
         image_save
@@ -336,33 +341,7 @@ def main(count,count_bef,count_error,count_success,existing_faces_cnt):
         print("學號：{:}   拍攝成功".format(name))
     else:            
         print("學號：{:}   編號：{:}角度未拍攝成功".format(name,count_error))
-    cv2.destroyAllWindows()  
-    cap.release()  
     # print('更新完畢') 
-    
-    
-if __name__ == '__main__':
-    
-    while True:
-        name = input("請輸入學號：")
-        count=[0]  
-        count_bef=0
-        count_error=[1,2,3,4,5,6,7,8,9]
-        count_success=[]
-        existing_faces_cnt=0
-        main(count,count_bef,count_error,count_success,existing_faces_cnt)
-
-        aaa,bbb,ccc = pic_features.main(name)  
-        if ccc == 1 : 
-            print("取特徵失敗，請勿移動過快....")
-            aaaaa = input("按任意鍵重新執行....")
-        else:
-            break
-    aaaaa = input("按任意鍵開始上傳資料....")    
-    pic_features.update_firebase(aaa,bbb)
-
-
-    
-    
+    pic_features.main(name)  
 
             

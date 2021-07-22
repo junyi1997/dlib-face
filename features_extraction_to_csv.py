@@ -18,6 +18,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 dict_update = dict()
 i=1
+error_pic = 0
 # 要读取人脸图像文件的路径 / Path of cropped faces
 path_images_from_camera = "./data/data_faces_from_camera/"
 
@@ -35,6 +36,7 @@ face_reco_model = dlib.face_recognition_model_v1("./data/data_dlib/dlib_face_rec
 # Input:    path_img           <class 'str'>
 # Output:   face_descriptor    <class 'dlib.vector'>
 def return_128d_features(path_img):
+    global error_pic
     img_rd = io.imread(path_img)
     faces = detector(img_rd, 1)
 
@@ -46,6 +48,7 @@ def return_128d_features(path_img):
     else:
         face_descriptor = 0
         print("no face")
+        error_pic = 1
     return face_descriptor
 
 
@@ -76,7 +79,8 @@ def return_features_mean_personX(path_faces_personX):
     return features_mean_personX
 
 def main(name):
-    global i
+    global i,error_pic
+    error_pic=0
     # 获取已录入的最后一个人脸序号 / Get the order of latest person
     person_list = os.listdir("data/data_faces_from_camera/")
     person_num_list = []
@@ -93,6 +97,11 @@ def main(name):
             dict_update[str(i)]=str(features_mean_personX)
             i=i+1
             writer.writerow(features_mean_personX)
+    return name ,dict_update,error_pic        
+    # update_firebase()
+
+def update_firebase(name,dict_update):            
+    # global name ,dict_update
     # print("學號：{:}".format(name)) 
     # # print(dict_update)       
     # for i in range(9):
